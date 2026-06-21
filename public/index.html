@@ -10,6 +10,12 @@
 </head>
 <body>
     <div class="app">
+        <header class="mobile-header">
+            <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
+            <span class="logo-text">DevTools</span>
+            <button class="theme-toggle-btn" onclick="toggleTheme()">🌙</button>
+        </header>
+        <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
         <aside class="sidebar">
             <div class="logo">
                 <h1>DevTools</h1>
@@ -103,6 +109,7 @@
         <main class="content">
             <div id="tool-container"></div>
         </main>
+        <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
     </div>
     <script src="/utils/helpers.js"></script>
     <script src="/tools/token-generator.js"></script>

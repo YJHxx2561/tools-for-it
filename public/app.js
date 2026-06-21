@@ -87,6 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const navItems = document.querySelectorAll('.nav-item');
     const container = document.getElementById('tool-container');
 
+    initTheme();
+
     navItems.forEach(item => {
         item.addEventListener('click', () => {
             navItems.forEach(i => i.classList.remove('active'));
@@ -104,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     tools[toolId].init();
                 }
             }
+            toggleSidebar();
         });
     });
 
@@ -115,3 +118,48 @@ document.addEventListener('DOMContentLoaded', () => {
         ${tools['token-generator'].render()}
     </div>`;
 });
+
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    let theme = 'dark';
+    if (savedTheme) {
+        theme = savedTheme;
+    } else if (prefersDark) {
+        theme = 'dark';
+    } else {
+        theme = 'light';
+    }
+    
+    setTheme(theme);
+}
+
+function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    
+    const themeBtns = document.querySelectorAll('.theme-toggle, .theme-toggle-btn');
+    themeBtns.forEach(btn => {
+        btn.textContent = theme === 'dark' ? '🌙' : '☀️';
+    });
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+}
+
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    
+    if (sidebar.classList.contains('open')) {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+    } else {
+        sidebar.classList.add('open');
+        overlay.classList.add('active');
+    }
+}
