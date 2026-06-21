@@ -106,6 +106,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     tools[toolId].init();
                 }
             }
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar.classList.contains('open')) {
+                toggleSidebar();
+            }
         });
     });
 
