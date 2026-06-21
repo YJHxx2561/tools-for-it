@@ -1,0 +1,13 @@
+{
+  "name": "devtools",
+  "version": "1.0.0",
+  "description": "DevTools - 开发者工具集",
+  "scripts": {
+    "dev": "wrangler pages dev public",
+    "deploy": "wrangler pages deploy public",
+    "build": "node scripts/build.js"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}

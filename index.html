@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevTools - 开发者工具集</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>DevTools</h1>
+                <p>开发者工具集</p>
+            </div>
+            <nav class="nav-menu">
+                <div class="nav-category">
+                    <span class="nav-category-title">生成器</span>
+                    <button class="nav-item active" data-tool="token-generator">
+                        <span class="icon">🔑</span>
+                        <span>Token 生成器</span>
+                    </button>
+                    <button class="nav-item" data-tool="uuid-generator">
+                        <span class="icon">🆔</span>
+                        <span>UUID 生成器</span>
+                    </button>
+                    <button class="nav-item" data-tool="mac-generator">
+                        <span class="icon">📡</span>
+                        <span>MAC 地址生成器</span>
+                    </button>
+                    <button class="nav-item" data-tool="random-port">
+                        <span class="icon">🔢</span>
+                        <span>随机端口生成器</span>
+                    </button>
+                    <button class="nav-item" data-tool="password-generator">
+                        <span class="icon">🔐</span>
+                        <span>密码生成器</span>
+                    </button>
+                </div>
+                <div class="nav-category">
+                    <span class="nav-category-title">加密与哈希</span>
+                    <button class="nav-item" data-tool="hash-text">
+                        <span class="icon">#️⃣</span>
+                        <span>Hash 文本</span>
+                    </button>
+                    <button class="nav-item" data-tool="encrypt-decrypt">
+                        <span class="icon">🔏</span>
+                        <span>加密/解密</span>
+                    </button>
+                    <button class="nav-item" data-tool="password-strength">
+                        <span class="icon">📊</span>
+                        <span>密码强度分析</span>
+                    </button>
+                </div>
+                <div class="nav-category">
+                    <span class="nav-category-title">转换器</span>
+                    <button class="nav-item" data-tool="docker-converter">
+                        <span class="icon">🐳</span>
+                        <span>Docker 转换器</span>
+                    </button>
+                </div>
+                <div class="nav-category">
+                    <span class="nav-category-title">计算器</span>
+                    <button class="nav-item" data-tool="subnet-calculator">
+                        <span class="icon">🌐</span>
+                        <span>IPv4 子网计算器</span>
+                    </button>
+                </div>
+                <div class="nav-category">
+                    <span class="nav-category-title">查询工具</span>
+                    <button class="nav-item" data-tool="http-codes">
+                        <span class="icon">📋</span>
+                        <span>HTTP 状态码</span>
+                    </button>
+                </div>
+                <div class="nav-category">
+                    <span class="nav-category-title">设备与代理</span>
+                    <button class="nav-item" data-tool="device-info">
+                        <span class="icon">💻</span>
+                        <span>设备信息</span>
+                    </button>
+                    <button class="nav-item" data-tool="user-agent">
+                        <span class="icon">🌍</span>
+                        <span>用户代理分析</span>
+                    </button>
+                </div>
+            </nav>
+        </aside>
+        <main class="content">
+            <div id="tool-container"></div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
