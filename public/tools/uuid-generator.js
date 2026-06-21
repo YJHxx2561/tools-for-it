@@ -14,11 +14,13 @@ function renderUuidGenerator() {
         </div>
         <div class="tool-card">
             <h3>生成结果</h3>
-            <div class="result-box" id="uuid-result" style="max-height: 400px; overflow-y: auto;"></div>
+            <div class="result-list" id="uuid-result">
+                <div class="result-placeholder">点击生成按钮获取 UUID</div>
+            </div>
         </div>
         <div style="display: flex; gap: 12px;">
             ${button('生成', "generateUUIDs()")}
-            ${button('复制全部', "copyToClipboard($('#uuid-result').textContent, this)", 'secondary')}
+            ${button('复制全部', "copyAllResults('uuid-result')", 'secondary')}
         </div>
     `;
 }
@@ -59,5 +61,14 @@ function generateUUIDs() {
     for (let i = 0; i < Math.min(count, 100); i++) {
         uuids.push(generators[version]());
     }
-    $('#uuid-result').textContent = uuids.join('\n');
+    
+    let html = '';
+    for (const uuid of uuids) {
+        html += `<div class="result-item">
+            <span class="result-text">${uuid}</span>
+            <button class="copy-btn" onclick="copyToClipboard('${uuid}', this)">复制</button>
+        </div>`;
+    }
+    
+    $('#uuid-result').innerHTML = html || '<div class="result-placeholder">无法生成 UUID</div>';
 }

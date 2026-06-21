@@ -25,11 +25,13 @@ function renderMacGenerator() {
         </div>
         <div class="tool-card">
             <h3>生成结果</h3>
-            <div class="result-box" id="mac-result" style="max-height: 400px; overflow-y: auto;"></div>
+            <div class="result-list" id="mac-result">
+                <div class="result-placeholder">点击生成按钮获取 MAC 地址</div>
+            </div>
         </div>
         <div style="display: flex; gap: 12px;">
             ${button('生成', "generateMACs()")}
-            ${button('复制全部', "copyToClipboard($('#mac-result').textContent, this)", 'secondary')}
+            ${button('复制全部', "copyAllResults('mac-result')", 'secondary')}
         </div>
     `;
 }
@@ -68,5 +70,14 @@ function generateMACs() {
         }
         macs.push(formatted.toUpperCase());
     }
-    $('#mac-result').textContent = macs.join('\n');
+    
+    let html = '';
+    for (const mac of macs) {
+        html += `<div class="result-item">
+            <span class="result-text">${mac}</span>
+            <button class="copy-btn" onclick="copyToClipboard('${mac}', this)">复制</button>
+        </div>`;
+    }
+    
+    $('#mac-result').innerHTML = html || '<div class="result-placeholder">无法生成 MAC 地址</div>';
 }
