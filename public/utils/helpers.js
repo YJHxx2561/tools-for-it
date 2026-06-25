@@ -13,6 +13,13 @@ function copyToClipboard(text, btn) {
     });
 }
 
+function copyResultById(id, btn) {
+    const el = document.getElementById(id);
+    if (el) {
+        copyToClipboard(el.textContent, btn);
+    }
+}
+
 function copyAllResults(containerId) {
     const container = document.getElementById(containerId);
     const items = container.querySelectorAll('.result-text');
@@ -79,4 +86,22 @@ function arrayToBase64Url(array) {
 
 function generateJWTPart(data) {
     return arrayToBase64Url(new TextEncoder().encode(JSON.stringify(data)));
+}
+
+async function fetchWithBackupKey(url) {
+    const backupKey = '858139894792cf4b9d0379251da9131b';
+    let response = await fetch(url);
+    let data = await response.json();
+
+    const rateLimitMessages = ['频次', '过快', '频率', '超限', '限制', '次数', '请求'];
+    const isRateLimitError = data.code === 400 && data.msg && 
+        rateLimitMessages.some(msg => data.msg.includes(msg));
+
+    if (isRateLimitError) {
+        const backupUrl = url.replace(/key=88888888/g, 'key=' + backupKey);
+        response = await fetch(backupUrl);
+        data = await response.json();
+    }
+
+    return data;
 }

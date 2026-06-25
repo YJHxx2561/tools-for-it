@@ -21,7 +21,11 @@
                 <h1>DevTools</h1>
                 <p>开发者工具集</p>
             </div>
-            <nav class="nav-menu">
+            <div class="search-box">
+                <input type="text" id="tool-search" placeholder="搜索工具..." oninput="searchTools()" onkeydown="handleSearchKeydown(event)">
+                <div class="search-results" id="search-results"></div>
+            </div>
+            <nav class="nav-menu" id="nav-menu">
                 <div class="nav-category">
                     <span class="nav-category-title">生成器</span>
                     <button class="nav-item active" data-tool="token-generator">
@@ -70,6 +74,14 @@
                 </div>
                 <div class="nav-category">
                     <span class="nav-category-title">转换器</span>
+                    <button class="nav-item" data-tool="qrcode-generator">
+                        <span class="icon">📱</span>
+                        <span>二维码生成器</span>
+                    </button>
+                    <button class="nav-item" data-tool="github-mirror">
+                        <span class="icon">⚡</span>
+                        <span>Github 加速下载</span>
+                    </button>
                     <button class="nav-item" data-tool="roman-numeral">
                         <span class="icon">🏛️</span>
                         <span>罗马数字转换器</span>
@@ -85,12 +97,62 @@
                         <span class="icon">🌐</span>
                         <span>IPv4 子网计算器</span>
                     </button>
+                    <button class="nav-item" data-tool="byte-calculator">
+                        <span class="icon">💾</span>
+                        <span>字节计算器</span>
+                    </button>
                 </div>
                 <div class="nav-category">
                     <span class="nav-category-title">查询工具</span>
                     <button class="nav-item" data-tool="http-codes">
                         <span class="icon">📋</span>
                         <span>HTTP 状态码</span>
+                    </button>
+                    <button class="nav-item" data-tool="idcard-query">
+                        <span class="icon">🆔</span>
+                        <span>身份证归属地查询</span>
+                    </button>
+                    <button class="nav-item" data-tool="phone-query">
+                        <span class="icon">📞</span>
+                        <span>手机归属地查询</span>
+                    </button>
+                    <button class="nav-item" data-tool="bankcard-query">
+                        <span class="icon">💳</span>
+                        <span>银行卡归属地查询</span>
+                    </button>
+                    <button class="nav-item" data-tool="icp-query">
+                        <span class="icon">📜</span>
+                        <span>ICP 备案查询</span>
+                    </button>
+                    <button class="nav-item" data-tool="whois-query">
+                        <span class="icon">🔍</span>
+                        <span>WHOIS 查询</span>
+                    </button>
+                    <button class="nav-item" data-tool="status-code-check">
+                        <span class="icon">📡</span>
+                        <span>网站状态码检测</span>
+                    </button>
+                </div>
+                <div class="nav-category">
+                    <span class="nav-category-title">网络工具</span>
+                    <button class="nav-item" data-tool="ping-tool">
+                        <span class="icon">🏓</span>
+                        <span>Ping 检测</span>
+                    </button>
+                    <button class="nav-item" data-tool="wechat-check">
+                        <span class="icon">🟢</span>
+                        <span>微信域名拦截检测</span>
+                    </button>
+                </div>
+                <div class="nav-category">
+                    <span class="nav-category-title">其他工具</span>
+                    <button class="nav-item" data-tool="temp-mail">
+                        <span class="icon">📧</span>
+                        <span>临时邮箱</span>
+                    </button>
+                    <button class="nav-item" data-tool="translator">
+                        <span class="icon">🌐</span>
+                        <span>文本翻译</span>
                     </button>
                 </div>
                 <div class="nav-category">
@@ -128,6 +190,48 @@
     <script src="/tools/http-codes.js"></script>
     <script src="/tools/device-info.js"></script>
     <script src="/tools/user-agent.js"></script>
+    <script src="/tools/qrcode-generator.js"></script>
+    <script src="/tools/github-mirror.js"></script>
+    <script src="/tools/byte-calculator.js"></script>
+    <script src="/tools/idcard-query.js"></script>
+    <script src="/tools/phone-query.js"></script>
+    <script src="/tools/bankcard-query.js"></script>
+    <script src="/tools/icp-query.js"></script>
+    <script src="/tools/temp-mail.js"></script>
+    <script src="/tools/whois-query.js"></script>
+    <script src="/tools/ping-tool.js"></script>
+    <script src="/tools/wechat-check.js"></script>
+    <script src="/tools/translator.js"></script>
+    <script src="/tools/status-code-check.js"></script>
     <script src="/app.js"></script>
+    <div class="footer-info" id="footer-info">
+        <div class="footer-yiyan" id="yiyan-text">正在加载...</div>
+        <div class="footer-user" id="user-info"></div>
+    </div>
+    <script>
+        (function() {
+            // 随机一言
+            fetchWithBackupKey('https://cn.apihz.cn/api/yiyan/api.php?id=88888888&key=88888888')
+                .then(data => {
+                    if (data.code === 200) {
+                        document.getElementById('yiyan-text').textContent = data.msg;
+                    } else {
+                        document.getElementById('yiyan-text').textContent = '';
+                    }
+                })
+                .catch(() => {
+                    document.getElementById('yiyan-text').textContent = '';
+                });
+
+            // 用户信息
+            fetchWithBackupKey('https://cn.apihz.cn/api/ip/getapi.php?id=88888888&key=88888888')
+                .then(data => {
+                    if (data.code === 200) {
+                        document.getElementById('user-info').innerHTML = `IP: ${data.ip || '-'} &middot; 浏览器: ${data.browser || '-'} &middot; 系统: ${data.os || '-'}`;
+                    }
+                })
+                .catch(() => {});
+        })();
+    </script>
 </body>
 </html>

@@ -80,6 +80,71 @@ const tools = {
         title: '用户代理分析',
         description: '解析用户代理字符串',
         render: renderUserAgent
+    },
+    'qrcode-generator': {
+        title: '二维码生成器',
+        description: '将文本转换为二维码图片',
+        render: renderQRCode
+    },
+    'github-mirror': {
+        title: 'Github 加速下载',
+        description: '通过加速镜像快速下载 GitHub 资源',
+        render: renderGitHubMirror
+    },
+    'byte-calculator': {
+        title: '字节计算器',
+        description: '计算 bit, byte, KB, MB, GB, TB, PB 之间的换算',
+        render: renderByteCalculator
+    },
+    'idcard-query': {
+        title: '身份证归属地查询',
+        description: '查询身份证号码的归属地、出生日期、性别等信息',
+        render: renderIdCardQuery
+    },
+    'phone-query': {
+        title: '手机归属地查询',
+        description: '查询手机号码的归属地和运营商信息',
+        render: renderPhoneQuery
+    },
+    'bankcard-query': {
+        title: '银行卡归属地查询',
+        description: '查询银行卡号的开户行、卡类型、归属地等信息',
+        render: renderBankCardQuery
+    },
+    'icp-query': {
+        title: 'ICP 备案查询',
+        description: '查询域名的 ICP 备案信息',
+        render: renderIcpQuery
+    },
+    'temp-mail': {
+        title: '临时邮箱',
+        description: '生成有效期10分钟的临时邮箱',
+        render: renderTempMail
+    },
+    'whois-query': {
+        title: 'WHOIS 查询',
+        description: '查询域名的 WHOIS 注册信息',
+        render: renderWhoisQuery
+    },
+    'status-code-check': {
+        title: '网站状态码检测',
+        description: '检测网址的 HTTP 状态码，支持国内、香港、美国节点',
+        render: renderStatusCodeCheck
+    },
+    'ping-tool': {
+        title: 'Ping 检测',
+        description: '检测域名或IP的响应时间和地理位置信息',
+        render: renderPingTool
+    },
+    'wechat-check': {
+        title: '微信域名拦截检测',
+        description: '检测网址是否被微信拦截',
+        render: renderWechatCheck
+    },
+    'translator': {
+        title: '文本翻译',
+        description: '支持多种语言互译',
+        render: renderTranslator
     }
 };
 
@@ -164,5 +229,120 @@ function toggleSidebar() {
     } else {
         sidebar.classList.add('open');
         overlay.classList.add('active');
+    }
+}
+
+function searchTools() {
+    const keyword = document.getElementById('tool-search').value.toLowerCase().trim();
+    const navMenu = document.getElementById('nav-menu');
+    const searchResults = document.getElementById('search-results');
+    const categories = navMenu.querySelectorAll('.nav-category');
+    
+    // 同时过滤侧边栏显示
+    categories.forEach(category => {
+        const items = category.querySelectorAll('.nav-item');
+        let hasVisibleItem = false;
+        
+        items.forEach(item => {
+            const toolId = item.dataset.tool;
+            const tool = tools[toolId];
+            if (tool) {
+                const title = tool.title.toLowerCase();
+                const desc = tool.description.toLowerCase();
+                const match = keyword === '' || title.includes(keyword) || desc.includes(keyword);
+                item.style.display = match ? '' : 'none';
+                if (match) hasVisibleItem = true;
+            }
+        });
+        
+        category.style.display = hasVisibleItem ? '' : 'none';
+    });
+    
+    // 显示搜索结果下拉列表
+    if (keyword === '') {
+        searchResults.innerHTML = '';
+        searchResults.style.display = 'none';
+        return;
+    }
+    
+    let matched = [];
+    for (const toolId in tools) {
+        const tool = tools[toolId];
+        if (tool.title.toLowerCase().includes(keyword) || tool.description.toLowerCase().includes(keyword)) {
+            matched.push({ id: toolId, title: tool.title });
+        }
+    }
+    
+    if (matched.length === 0) {
+        searchResults.innerHTML = '<div class="search-no-result">未找到匹配的工具</div>';
+    } else {
+        searchResults.innerHTML = matched.map(m => 
+            `<div class="search-result-item" onclick="goToTool('${m.id}')">${m.title}</div>`
+        ).join('');
+    }
+    searchResults.style.display = 'block';
+}
+
+function goToTool(toolId) {
+    const container = document.getElementById('tool-container');
+    const searchResults = document.getElementById('search-results');
+    const searchInput = document.getElementById('tool-search');
+    
+    // 清除搜索状态
+    searchResults.innerHTML = '';
+    searchResults.style.display = 'none';
+    searchInput.value = '';
+    
+    // 恢复侧边栏显示
+    const navMenu = document.getElementById('nav-menu');
+    const categories = navMenu.querySelectorAll('.nav-category');
+    categories.forEach(category => {
+        category.style.display = '';
+        category.querySelectorAll('.nav-item').forEach(item => {
+            item.style.display = '';
+        });
+    });
+    
+    // 高亮当前工具
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    const targetItem = document.querySelector(`.nav-item[data-tool="${toolId}"]`);
+    if (targetItem) {
+        targetItem.classList.add('active');
+        targetItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    
+    // 加载工具内容
+    if (tools[toolId]) {
+        container.innerHTML = `<div class="tool-container">
+            <div class="tool-header">
+                <h2>${tools[toolId].title}</h2>
+                <p>${tools[toolId].description}</p>
+            </div>
+            ${tools[toolId].render()}
+        </div>`;
+        if (tools[toolId].init) {
+            tools[toolId].init();
+        }
+    }
+    
+    // 移动端关闭侧边栏
+    const sidebar = document.querySelector('.sidebar');
+    if (sidebar.classList.contains('open')) {
+        toggleSidebar();
+    }
+}
+
+function handleSearchKeydown(event) {
+    if (event.key === 'Enter') {
+        const keyword = document.getElementById('tool-search').value.toLowerCase().trim();
+        if (!keyword) return;
+        
+        for (const toolId in tools) {
+            const tool = tools[toolId];
+            if (tool.title.toLowerCase().includes(keyword) || tool.description.toLowerCase().includes(keyword)) {
+                goToTool(toolId);
+                break;
+            }
+        }
     }
 }

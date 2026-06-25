@@ -93,6 +93,67 @@ body {
     color: var(--text-secondary);
 }
 
+.search-box {
+    padding: 0 20px 16px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 16px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 8px 12px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.search-box input::placeholder {
+    color: var(--text-secondary);
+}
+
+.search-results {
+    display: none;
+    margin-top: 8px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    max-height: 240px;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.search-result-item {
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--text-primary);
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.15s;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background: var(--bg-tertiary);
+    color: var(--accent);
+}
+
+.search-no-result {
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
 .nav-menu {
     padding: 0 12px;
 }
@@ -559,9 +620,53 @@ body {
     color: var(--accent);
 }
 
+.qr-type-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-primary);
+    color: var(--text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.qr-type-btn:hover {
+    border-color: var(--accent);
+    color: var(--text-primary);
+}
+
+.qr-type-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+.footer-info {
+    position: fixed;
+    bottom: 0;
+    left: 260px;
+    right: 0;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    padding: 8px 20px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-align: center;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.footer-user {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
 .theme-toggle {
     position: fixed;
-    bottom: 20px;
+    bottom: 60px;
     right: 20px;
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
@@ -595,6 +700,11 @@ body {
         margin-left: 0;
         padding: 20px;
         padding-top: 76px;
+        padding-bottom: 70px;
+    }
+
+    .footer-info {
+        left: 0;
     }
     
     .two-col {
@@ -617,5 +727,9 @@ body {
 @media (min-width: 769px) {
     .mobile-header {
         display: none;
+    }
+
+    .content {
+        padding-bottom: 70px;
     }
 }
